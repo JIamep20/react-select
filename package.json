@@ -87,7 +87,7 @@
     "start": "webpack-dev-server --progress",
     "test": "cross-env NODE_ENV=test mocha --compilers js:babel-core/register",
     "precommit": "lint-staged && yarn run test",
-    "postinstall": "nps build"
+    "postinstall": "npm install && nps build"
   },
   "files": [
     "dist",
