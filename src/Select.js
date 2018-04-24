@@ -1057,7 +1057,7 @@ class Select extends React.Component {
 				options,
 				removeValue: this.removeValue,
 				selectValue: this.selectValue,
-				valueArray,
+				valueArray: this.props.selectAllOption ? valueArray.concat(this.props.selectAllOption) : valueArray,
 				valueKey: this.props.valueKey,
 				selectAllOption: this.props.selectAllOption,
 				toggleAllSelection: this.toggleAllSelection,
