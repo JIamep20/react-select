@@ -98,6 +98,7 @@ class Select extends React.Component {
 			'onOptionRef',
 			'removeValue',
 			'selectValue',
+			'toggleAllSelection',
 		].forEach((fn) => this[fn] = this[fn].bind(this));
 
 		this.state = {
@@ -610,6 +611,15 @@ class Select extends React.Component {
 		}
 	}
 
+	toggleAllSelection() {
+		let valueArray = this.getValueArray(this.props.value);
+		if (valueArray.length >= this.props.options.length) {
+			this.setValue('');
+		} else {
+			this.setValue(this.props.options);
+		}
+	}
+
 	selectValue (value) {
 		// NOTE: we actually add/set the value in a callback to make sure the
 		// input value is empty to avoid styling issues in Chrome
@@ -978,7 +988,10 @@ class Select extends React.Component {
 
 	filterOptions (excludeOptions) {
 		const filterValue = this.state.inputValue;
-		const options = this.props.options || [];
+		let options = this.props.options || [];
+		if (this.props.selectAllOption !== false && options.length > 0) {
+			options = [this.props.selectAllOption].concat(options);
+		}
 		if (this.props.filterOptions) {
 			// Maintain backwards compatibility with boolean attribute
 			const filterOptions = typeof this.props.filterOptions === 'function'
@@ -1030,6 +1043,8 @@ class Select extends React.Component {
 				selectValue: this.selectValue,
 				valueArray,
 				valueKey: this.props.valueKey,
+				selectAllOption: this.props.selectAllOption,
+				toggleAllSelection: this.toggleAllSelection,
 			});
 		} else if (this.props.noResultsText) {
 			return (
@@ -1255,6 +1270,7 @@ Select.propTypes = {
 	rtl: PropTypes.bool, 									// set to true in order to use react-select in right-to-left direction
 	scrollMenuIntoView: PropTypes.bool,   // boolean to enable the viewport to shift so that the full menu fully visible when engaged
 	searchable: PropTypes.bool,           // whether to enable searching feature or not
+	selectAllOption: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]), //
 	simpleValue: PropTypes.bool,          // pass the value to onChange as a simple value (legacy pre 1.0 mode), defaults to false
 	style: PropTypes.object,              // optional style to apply to the control
 	tabIndex: stringOrNumber,             // optional tab index of the control
@@ -1306,6 +1322,7 @@ Select.defaultProps = {
 	rtl: false,
 	scrollMenuIntoView: true,
 	searchable: true,
+	selectAllOption: false,
 	simpleValue: false,
 	tabSelectsValue: true,
  	trimFilter: true,
