@@ -1042,6 +1042,9 @@ class Select extends React.Component {
 
 	renderMenu (options, valueArray, focusedOption) {
 		if (options && options.length) {
+			if (this.props.selectAllOption && valueArray.length >= options.length - 1) {
+				valueArray = valueArray.concat(this.props.selectAllOption);
+			}
 			return this.props.menuRenderer({
 				focusedOption,
 				focusOption: this.focusOption,
@@ -1057,7 +1060,7 @@ class Select extends React.Component {
 				options,
 				removeValue: this.removeValue,
 				selectValue: this.selectValue,
-				valueArray: this.props.selectAllOption ? valueArray.concat(this.props.selectAllOption) : valueArray,
+				valueArray,
 				valueKey: this.props.valueKey,
 				selectAllOption: this.props.selectAllOption,
 				toggleAllSelection: this.toggleAllSelection,
@@ -1341,7 +1344,7 @@ Select.defaultProps = {
 	rtl: false,
 	scrollMenuIntoView: true,
 	searchable: true,
-	selectAllOption: false,
+	selectAllOption: {label: 'asd', value: -1},
 	simpleValue: false,
 	tabSelectsValue: true,
  	trimFilter: true,
