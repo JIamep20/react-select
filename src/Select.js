@@ -631,7 +631,7 @@ class Select extends React.Component {
 			this.hasScrolledToOption = false;
 		}
 		const updatedValue = this.props.onSelectResetsInput ? '' : this.state.inputValue;
-		if (this.props.selectAllOption !== false && this.props.selectAllOption[this.props.valueKey] === value[this.props.valueKey]) {
+		if (this.props.multi && this.props.selectAllOption !== false && this.props.selectAllOption[this.props.valueKey] === value[this.props.valueKey]) {
 			this.toggleAllSelection();
 		} else if (this.props.multi) {
 			this.setState({
@@ -1005,7 +1005,7 @@ class Select extends React.Component {
 	filterOptions (excludeOptions) {
 		const filterValue = this.state.inputValue;
 		let options = this.props.options || [];
-		if (this.props.selectAllOption !== false && options.length > 0) {
+		if (this.props.multi && this.props.selectAllOption !== false && options.length > 0) {
 			options = [this.props.selectAllOption].concat(options);
 		}
 		if (this.props.filterOptions) {
@@ -1042,7 +1042,7 @@ class Select extends React.Component {
 
 	renderMenu (options, valueArray, focusedOption) {
 		if (options && options.length) {
-			if (this.props.selectAllOption && valueArray.length >= options.length - 1) {
+			if (this.props.multi && this.props.selectAllOption && valueArray.length >= options.length - 1) {
 				valueArray = valueArray.concat(this.props.selectAllOption);
 			}
 			return this.props.menuRenderer({
@@ -1344,7 +1344,7 @@ Select.defaultProps = {
 	rtl: false,
 	scrollMenuIntoView: true,
 	searchable: true,
-	selectAllOption: {label: 'asd', value: -1},
+	selectAllOption: false,
 	simpleValue: false,
 	tabSelectsValue: true,
  	trimFilter: true,
