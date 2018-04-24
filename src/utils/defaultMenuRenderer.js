@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import SelectAllOption from '../SelectAllOption';
 
 const menuRenderer = ({
 	focusedOption,
@@ -18,6 +19,8 @@ const menuRenderer = ({
 	selectValue,
 	valueArray,
 	valueKey,
+	selectAllOption,
+	toggleAllSelection
 }) => {
 	let Option = optionComponent;
 
@@ -30,6 +33,38 @@ const menuRenderer = ({
 			'is-focused': isFocused,
 			'is-disabled': option.disabled,
 		});
+
+		if (selectAllOption !== false && option[valueKey] === selectAllOption[valueKey]) {
+			isSelected = valueArray && valueArray.length >= options.length - 1;
+			optionClass = classNames(optionClassName, {
+				'Select-option': true,
+				'is-selected': isSelected,
+				'is-focused': isFocused,
+				'is-disabled': option.disabled,
+			});
+			return (
+				<SelectAllOption
+					className={optionClass}
+					focusOption={focusOption}
+					inputValue={inputValue}
+					instancePrefix={instancePrefix}
+					isDisabled={option.disabled}
+					isFocused={isFocused}
+					isSelected={isSelected}
+					key={`option-${i}-${option[valueKey]}`}
+					onFocus={onFocus}
+					onSelect={onSelect}
+					option={option}
+					optionIndex={i}
+					ref={ref => { onOptionRef(ref, isFocused); }}
+					removeValue={removeValue}
+					selectValue={selectValue}
+					toggleAllSelection={toggleAllSelection}
+				>
+					{optionRenderer(option, i, inputValue)}
+				</SelectAllOption>
+			);
+		}
 
 		return (
 			<Option
